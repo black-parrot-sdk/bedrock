@@ -9,9 +9,6 @@ UCODE_SRC_DIR=$(abspath ./microcode/cce)
 
 ROMS_DIR=$(abspath ./roms)
 
-BSG_MEM_DIR=$(abspath $(TOP)/external/basejump_stl/bsg_mem)
-BSG_ROM_SCRIPT=$(BSG_MEM_DIR)/bsg_ascii_to_rom.py
-
 CXX=g++
 COMMON_CFLAGS=-Wall -Wno-switch -Wno-format -Wno-unused-function
 CXXFLAGS=-g -std=c++11 $(COMMON_CFLAGS)
@@ -30,7 +27,6 @@ UCODE_MEM=$(UCODE_BUILD_SRC:.S=.mem)
 UCODE_ADDR=$(UCODE_BUILD_SRC:.S=.addr)
 UCODE_BIN=$(UCODE_BUILD_SRC:.S=.bin)
 UCODE_DBG=$(UCODE_BUILD_SRC:.S=.dbg)
-UCODE_ROM=$(UCODE_BUILD_SRC:.S=.rom)
 
 MODULE_NAME ?= bp_cce_inst_rom
 
@@ -61,19 +57,16 @@ dirs:
 %.pre: %.S
 	gcc -E $(COMMON_CFLAGS) -I$(UCODE_INC_DIR) $< -o $@
 
-%.mem: %.pre
+%.mem: %.pre $(AS)
 	./$(AS) -b -i $< -o $@
 
-%.dbg: %.pre
+%.dbg: %.pre $(AS)
 	./$(AS) -d -i $< -o $@
-
-%.rom: %.mem
-	python2 $(BSG_ROM_SCRIPT) $< $(MODULE_NAME) zero > $@
 
 %.bin: %.mem
 	xxd -r -p $< > $@
 
-roms: dirs $(AS) $(UCODE_ADDR) $(UCODE_MEM) $(UCODE_BIN) $(UCODE_ROM)
+bins: dirs $(UCODE_ADDR) $(UCODE_MEM) $(UCODE_BIN)
 
 tidy:
 	rm -f $(AS_OBJ)
