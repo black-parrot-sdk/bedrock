@@ -26,8 +26,11 @@
 using namespace std;
 
 enum {
+  // ASCII binary, 34 bits
   output_format_ascii_binary = 1,
-  output_format_dbg,
+  // ASCII binary, padded to 64 bits
+  output_format_ascii_binary_pad = 2,
+  output_format_dbg = 3
 };
 
 typedef struct {

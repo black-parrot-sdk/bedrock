@@ -65,6 +65,11 @@ Assembler::parseArgs(int argc, char *argv[]) {
           output_format = output_format_ascii_binary;
           ++i;
           break;
+        case  'p':
+        case  'P':
+          output_format = output_format_ascii_binary_pad;
+          ++i;
+          break;
         case  'd':
         case  'D':
           output_format = output_format_dbg;

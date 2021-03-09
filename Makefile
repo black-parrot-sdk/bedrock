@@ -58,7 +58,7 @@ dirs:
 	gcc -E $(COMMON_CFLAGS) -I$(UCODE_INC_DIR) $< -o $@
 
 %.mem: %.pre $(AS)
-	./$(AS) -b -i $< -o $@
+	./$(AS) -p -i $< -o $@
 
 %.dbg: %.pre $(AS)
 	./$(AS) -d -i $< -o $@

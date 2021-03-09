@@ -1143,6 +1143,11 @@ Assembler::writeInstToOutput(parsed_inst_s *parsed_inst, uint16_t line_number, s
 
   bp_cce_inst_s *inst = &(parsed_inst->inst);
 
+  if (output_format == output_format_ascii_binary_pad) {
+      // Pad to 64 bits
+      printPad(64-bp_cce_inst_s_width, ss);
+  }
+
   printField(inst->predict_taken, 1, ss);
   printField(inst->branch, 1, ss);
 
@@ -1236,6 +1241,7 @@ Assembler::writeInstToOutput(parsed_inst_s *parsed_inst, uint16_t line_number, s
 
   switch (output_format) {
     case  output_format_ascii_binary:
+    case  output_format_ascii_binary_pad:
       fprintf(outfp, "%s\n", ss.str().c_str());
       break;
     case  output_format_dbg:
