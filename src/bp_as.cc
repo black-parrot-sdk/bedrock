@@ -915,7 +915,7 @@ Assembler::parseFlag(vector<string> *tokens, int n, parsed_inst_s *parsed_inst) 
     case e_norf_op:
       parsed_inst->encoding = e_rtype;
       inst->type_u.rtype.src_a = parseOpd(tokens->at(1));
-      inst->type_u.rtype.src_a = parseOpd(tokens->at(2));
+      inst->type_u.rtype.src_b = parseOpd(tokens->at(2));
       inst->type_u.rtype.dst = parseOpd(tokens->at(3));
       break;
     case e_notf_op:
