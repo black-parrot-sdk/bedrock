@@ -30,6 +30,8 @@ UCODE_DBG=$(UCODE_BUILD_SRC:.S=.dbg)
 
 MODULE_NAME ?= bp_cce_inst_rom
 
+PYTHON ?= python3
+
 .DEFAULT: echo
 
 echo:
@@ -52,7 +54,7 @@ dirs:
 	cp $(UCODE_SRC_DIR)/* $(ROMS_DIR)/
 
 %.addr: %.S
-	python2 py/addr.py -i $< > $@
+	$(PYTHON) py/addr.py -i $< > $@
 
 %.pre: %.S
 	gcc -E $(COMMON_CFLAGS) -I$(UCODE_INC_DIR) $< -o $@
