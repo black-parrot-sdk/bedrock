@@ -21,10 +21,10 @@ bi sync_top
 finish_init: movip COH_S cohSt
 
 # Ready Routine
-ready: wfq lceReq
+ready: clm
 
 # LCE Request Routine
-lce_req: clm
+lce_req: wfq lceReq
 poph lceReq r0
 bf uncached_req ucf
 rdp addr=req
