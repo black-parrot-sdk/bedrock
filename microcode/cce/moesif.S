@@ -36,7 +36,7 @@ popq lceReq wp
 rdw addr=req lce=req lru_way=lru
 gad
 # handle slowly if write, transfer, replacement, upgrade, or block cached in S
-bfnz handle_req rqf cmf cef cof cff csf rf uf
+bfnz handle_req rqf cmf cef cof cff csf rf uf nerf
 
 # complete fast path access
 # uses the speculative memory access
