@@ -109,7 +109,7 @@ wds addr=req lce=owner way=owner state=ownerCohSt
 transfer_poph: poph lceResp r0
 beqi r0 COH_ACK transfer_poph
 bf complete_transfer nwbf
-pushq memCmd MEM_CMD_WR addr=req lce=owner way=owner wp=1
+pushq memCmd MEM_CMD_WR addr=lceresp lce=owner way=owner wp=1
 complete_transfer: popq lceResp
 bi ready
 
@@ -159,7 +159,7 @@ wds addr=req lce=req way=req state=imm COH_I
 uc_replacement_poph: poph lceResp r0
 beqi r0 COH_ACK uc_replacement_poph
 bf uc_complete_replacement nwbf
-pushq memCmd MEM_CMD_WR addr=req lce=req way=req wp=1
+pushq memCmd MEM_CMD_WR addr=lceresp lce=req way=req wp=1
 uc_complete_replacement: popq lceResp
 
 # Invalidate any cache with block in S
@@ -173,7 +173,7 @@ wds addr=req lce=owner way=owner state=imm COH_I
 uc_inv_poph: poph lceResp r0
 beqi r0 COH_ACK uc_inv_poph
 bf uc_complete_inv nwbf
-pushq memCmd MEM_CMD_WR addr=req lce=req way=req wp=1
+pushq memCmd MEM_CMD_WR addr=lceresp lce=req way=req wp=1
 uc_complete_inv: popq lceResp
 
 uc_mem: movgs r7 msgsize
