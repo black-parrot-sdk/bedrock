@@ -65,6 +65,9 @@ dirs:
 %.dbg: %.pre $(AS)
 	./$(AS) -d -i $< -o $@
 
+# We append 2 words of 1 at the end of the ucode. This sentinel is used by the
+#   loader to determine the end of the binary and know to stop loading without counting
+#   the length of the program.
 %.bin: %.mem
 	sed -i -e '$$a1111111111111111111111111111111111111111111111111111111111111111' $^
 	sed -i -e '$$a1111111111111111111111111111111111111111111111111111111111111111' $^
