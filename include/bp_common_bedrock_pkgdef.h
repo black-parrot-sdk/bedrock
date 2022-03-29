@@ -70,7 +70,7 @@ typedef enum {
   ,e_bedrock_cmd_st_tr           = 9
   ,e_bedrock_cmd_st_tr_wb        = 10
   ,e_bedrock_cmd_uc_data         = 11
-  ,e_bedrock_cmd_uc_done         = 12
+  ,e_bedrock_cmd_uc_st_done      = 12
 } bp_bedrock_cmd_type_e;
 
 #define bp_bedrock_cmd_type_width 4
