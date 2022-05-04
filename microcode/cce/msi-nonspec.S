@@ -134,7 +134,7 @@ uc_inv_check: bfz uc_owned_check csf pt
 inv
 
 # Invalidate and WB owner cache
-uc_owned_check: bfz uc_mem cmf cef pt
+uc_owned_check: bfz uc_mem cmf pt
 pushq lceCmd ST_WB addr=req lce=owner way=owner
 wds addr=req lce=owner way=owner state=imm COH_I
 uc_inv_poph: poph lceResp r0
