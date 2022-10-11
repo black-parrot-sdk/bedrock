@@ -288,7 +288,7 @@ Assembler::parseOpd(string &s) {
 
   // Queue
   } else if (!s.compare("memresp")) {
-    return e_opd_mem_resp_v;
+    return e_opd_mem_rev_v;
   } else if (!s.compare("lceresp")) {
     return e_opd_lce_resp_v;
   } else if (!s.compare("pending")) {
@@ -298,11 +298,11 @@ Assembler::parseOpd(string &s) {
   } else if (!s.compare("lceresptype")) {
     return e_opd_lce_resp_type;
   } else if (!s.compare("memresptype")) {
-    return e_opd_mem_resp_type;
+    return e_opd_mem_rev_type;
   } else if (!s.compare("lcerespdata")) {
     return e_opd_lce_resp_data;
   } else if (!s.compare("memrespdata")) {
-    return e_opd_mem_resp_data;
+    return e_opd_mem_rev_data;
   } else if (!s.compare("lcereqdata")) {
     return e_opd_lce_req_data;
 
@@ -430,7 +430,7 @@ Assembler::parseAddrSel(string &s) {
   } else if (!s.compare("lceresp")) {
     return e_mux_sel_addr_lce_resp;
   } else if (!s.compare("memresp")) {
-    return e_mux_sel_addr_mem_resp;
+    return e_mux_sel_addr_mem_rev;
   } else if (!s.compare("pending")) {
     return e_mux_sel_addr_pending;
   } else if (!s.compare("zero") | !s.compare("0")) {
@@ -468,7 +468,7 @@ Assembler::parseLceSel(string &s) {
   } else if (!s.compare("lceresp")) {
     return e_mux_sel_lce_lce_resp;
   } else if (!s.compare("memresp")) {
-    return e_mux_sel_lce_mem_resp;
+    return e_mux_sel_lce_mem_rev;
   } else if (!s.compare("pending")) {
     return e_mux_sel_lce_pending;
   } else if (!s.compare("zero") | !s.compare("0")) {
@@ -554,7 +554,7 @@ Assembler::parseSrcQueue(string &s) {
   if (!s.compare("lcereq")) {
     return e_src_q_sel_lce_req;
   } else if (!s.compare("memresp")) {
-    return e_src_q_sel_mem_resp;
+    return e_src_q_sel_mem_rev;
   } else if (!s.compare("pending")) {
     return e_src_q_sel_pending;
   } else if (!s.compare("lceresp")) {
@@ -570,7 +570,7 @@ Assembler::parseSrcQueueOneHot(string &s) {
   if (!s.compare("lcereq")) {
     return e_src_q_lce_req;
   } else if (!s.compare("memresp")) {
-    return e_src_q_mem_resp;
+    return e_src_q_mem_rev;
   } else if (!s.compare("pending")) {
     return e_src_q_pending;
   } else if (!s.compare("lceresp")) {
@@ -586,7 +586,7 @@ Assembler::parseDstQueue(string &s) {
   if (!s.compare("lcecmd")) {
     return e_dst_q_sel_lce_cmd;
   } else if (!s.compare("memcmd")) {
-    return e_dst_q_sel_mem_cmd;
+    return e_dst_q_sel_mem_fwd;
   } else {
     printf("Unknown dst queue select operand: %s\n", s.c_str());
     exit(-1);
@@ -598,7 +598,7 @@ Assembler::parseDstQueueOneHot(string &s) {
   if (!s.compare("lcecmd")) {
     return e_dst_q_lce_cmd;
   } else if (!s.compare("memcmd")) {
-    return e_dst_q_mem_cmd;
+    return e_dst_q_mem_fwd;
   } else {
     printf("Unknown dst queue onehot operand: %s\n", s.c_str());
     exit(-1);
@@ -683,7 +683,7 @@ Assembler::parsePushQueueArgs(vector<string> *tokens, int n, pushq_args *args) {
   if (args->dst_q == e_dst_q_sel_lce_cmd) {
     args->lce_cmd = (bp_bedrock_cmd_type_e)parseImm(tokens->at(2));
   } else {
-    args->mem_cmd = (bp_bedrock_mem_type_e)parseImm(tokens->at(2));
+    args->mem_fwd = (bp_bedrock_mem_type_e)parseImm(tokens->at(2));
   }
   // after the opcode, address, and command, all args are optional and default to 0
   // args are specified as "arg=value"
@@ -1037,7 +1037,7 @@ Assembler::parseQueue(vector<string> *tokens, int n, parsed_inst_s *parsed_inst)
           exit(-1);
         }
       } else {
-        inst->type_u.pushq.cmd.mem_cmd = qargs.mem_cmd;
+        inst->type_u.pushq.cmd.mem_fwd = qargs.mem_fwd;
       }
       inst->type_u.pushq.spec = qargs.spec;
       inst->type_u.pushq.write_pending = qargs.wp;

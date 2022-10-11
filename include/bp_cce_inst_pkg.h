@@ -265,14 +265,14 @@ typedef enum {
   ,e_opd_auto_fwd_msg                    = 0x4 // Message auto-forward control
   ,e_opd_coh_state_default               = 0x5 // Default for MSHR.next_coh_state
 
-  ,e_opd_mem_resp_v                      = 0x0
+  ,e_opd_mem_rev_v                      = 0x0
   ,e_opd_lce_resp_v                      = 0x1
   ,e_opd_pending_v                       = 0x2
   ,e_opd_lce_req_v                       = 0x3
   ,e_opd_lce_resp_type                   = 0x4
-  ,e_opd_mem_resp_type                   = 0x5
+  ,e_opd_mem_rev_type                   = 0x5
   ,e_opd_lce_resp_data                   = 0x6
-  ,e_opd_mem_resp_data                   = 0x7
+  ,e_opd_mem_rev_data                   = 0x7
   ,e_opd_lce_req_data                    = 0x8
 
 } bp_cce_inst_opd_e;
@@ -324,7 +324,7 @@ typedef enum {
   ,e_mux_sel_addr_mshr_lru               = 0x9
   ,e_mux_sel_addr_lce_req                = 0xA
   ,e_mux_sel_addr_lce_resp               = 0xB
-  ,e_mux_sel_addr_mem_resp               = 0xC
+  ,e_mux_sel_addr_mem_rev               = 0xC
   ,e_mux_sel_addr_pending                = 0xD
   ,e_mux_sel_addr_0                      = 0xF // constant 0
 } bp_cce_inst_mux_sel_addr_e;
@@ -345,7 +345,7 @@ typedef enum {
   ,e_mux_sel_lce_mshr_owner              = 0x9
   ,e_mux_sel_lce_lce_req                 = 0xA
   ,e_mux_sel_lce_lce_resp                = 0xB
-  ,e_mux_sel_lce_mem_resp                = 0xC
+  ,e_mux_sel_lce_mem_rev                = 0xC
   ,e_mux_sel_lce_pending                 = 0xD
   ,e_mux_sel_lce_0                       = 0xF // constant 0
 } bp_cce_inst_mux_sel_lce_e;
@@ -399,7 +399,7 @@ typedef enum {
 // order: {lceReq, lceResp, memResp, pending}
 typedef enum {
   e_src_q_pending                        = 1
-  ,e_src_q_mem_resp                      = 2
+  ,e_src_q_mem_rev                      = 2
   ,e_src_q_lce_resp                      = 4
   ,e_src_q_lce_req                       = 8
 } bp_cce_inst_src_q_e;
@@ -409,7 +409,7 @@ typedef enum {
 // Source queue select
 typedef enum {
   e_src_q_sel_lce_req                    = 0x0
-  ,e_src_q_sel_mem_resp                  = 0x1
+  ,e_src_q_sel_mem_rev                  = 0x1
   ,e_src_q_sel_pending                   = 0x2
   ,e_src_q_sel_lce_resp                  = 0x3
 } bp_cce_inst_src_q_sel_e;
@@ -419,7 +419,7 @@ typedef enum {
 // Destination queue one hot
 typedef enum {
   e_dst_q_lce_cmd                        = 1
-  ,e_dst_q_mem_cmd                       = 2
+  ,e_dst_q_mem_fwd                       = 2
 } bp_cce_inst_dst_q_e;
 
 #define bp_cce_num_dst_q 2
@@ -427,7 +427,7 @@ typedef enum {
 // Destination queue select
 typedef enum {
   e_dst_q_sel_lce_cmd                    = 0x0
-  ,e_dst_q_sel_mem_cmd                   = 0x1
+  ,e_dst_q_sel_mem_fwd                   = 0x1
 } bp_cce_inst_dst_q_sel_e;
 
 #define bp_cce_inst_dst_q_sel_width 2
@@ -657,7 +657,7 @@ typedef union {
 
 typedef union {
   bp_bedrock_cmd_type_e   lce_cmd : bp_bedrock_cmd_type_width;
-  bp_bedrock_mem_type_e   mem_cmd : bp_bedrock_mem_type_width;
+  bp_bedrock_mem_type_e   mem_fwd : bp_bedrock_mem_type_width;
 } pushq_cmd_u;
 
 typedef struct {

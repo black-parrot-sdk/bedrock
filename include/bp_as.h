@@ -42,7 +42,7 @@ typedef struct pushq_args {
   bp_cce_inst_dst_q_sel_e        dst_q;
 
   bp_bedrock_cmd_type_e          lce_cmd;
-  bp_bedrock_mem_type_e          mem_cmd;
+  bp_bedrock_mem_type_e          mem_fwd;
 
   bp_cce_inst_mux_sel_addr_e     addr_sel;
   bp_cce_inst_mux_sel_lce_e      lce_sel;
@@ -56,7 +56,7 @@ typedef struct pushq_args {
   pushq_args() {
     dst_q = e_dst_q_sel_lce_cmd;
     lce_cmd = e_bedrock_cmd_sync;
-    mem_cmd = e_bedrock_mem_rd;
+    mem_fwd = e_bedrock_mem_rd;
     addr_sel = e_mux_sel_addr_r0;
     lce_sel = e_mux_sel_lce_r0;
     way_sel = e_mux_sel_way_r0;
