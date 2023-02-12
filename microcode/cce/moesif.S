@@ -57,8 +57,10 @@ pushq lceCmd ST_WB addr=lru lce=req way=lru
 # wait for writeback response
 replacement_poph: poph lceResp r0
 beqi r0 COH_ACK replacement_poph
-bf next_coh_state nwbf
+bf complete_replacement nwbf
 pushq memCmd MEM_CMD_WR addr=lru lce=req way=lru wp=1
+bi next_coh_state
+complete_replacement: popq lceResp
 
 # Next Coherence State Routine
 # write request means set to M, else check non-exclusive request or cached
@@ -192,7 +194,6 @@ uc_replacement_poph: poph lceResp r0
 beqi r0 COH_ACK uc_replacement_poph
 bf uc_complete_replacement nwbf
 pushq memCmd MEM_CMD_WR addr=lceresp lce=req way=req wp=1
-# skip popping lceResp if sending writeback
 bi uc_inv_check
 uc_complete_replacement: popq lceResp
 
