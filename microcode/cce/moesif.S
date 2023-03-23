@@ -59,6 +59,7 @@ replacement_poph: poph lceResp r0
 beqi r0 COH_ACK replacement_poph
 bf complete_replacement nwbf
 pushq memCmd MEM_CMD_WR addr=lru lce=req way=lru wp=1
+bi next_coh_state
 complete_replacement: popq lceResp
 
 # Next Coherence State Routine
@@ -137,6 +138,7 @@ transfer_poph: poph lceResp r0
 beqi r0 COH_ACK transfer_poph
 bf complete_transfer nwbf
 pushq memCmd MEM_CMD_WR addr=lceresp lce=owner way=owner wp=1
+bi ready
 complete_transfer: popq lceResp
 bi ready
 
@@ -172,7 +174,6 @@ pushq memCmd MEM_CMD_UC_RD addr=req lce=req
 popq lceReq
 bi ready
 uncached_store: pushq memCmd MEM_CMD_UC_WR addr=req lce=req
-popq lceReq
 bi ready
 
 # Uncached request to coherent/cacheable memory
@@ -193,6 +194,7 @@ uc_replacement_poph: poph lceResp r0
 beqi r0 COH_ACK uc_replacement_poph
 bf uc_complete_replacement nwbf
 pushq memCmd MEM_CMD_WR addr=lceresp lce=req way=req wp=1
+bi uc_inv_check
 uc_complete_replacement: popq lceResp
 
 # Invalidate any cache with block in S
@@ -207,6 +209,7 @@ uc_inv_poph: poph lceResp r0
 beqi r0 COH_ACK uc_inv_poph
 bf uc_complete_inv nwbf
 pushq memCmd MEM_CMD_WR addr=lceresp lce=req way=req wp=1
+bi uc_mem
 uc_complete_inv: popq lceResp
 
 uc_mem: movgs r7 msgsize
@@ -215,6 +218,5 @@ pushq memCmd MEM_CMD_UC_RD addr=req lce=req wp=1
 popq lceReq
 bi ready
 coherent_store: pushq memCmd MEM_CMD_UC_WR addr=req lce=req wp=1
-popq lceReq
 bi ready
 
