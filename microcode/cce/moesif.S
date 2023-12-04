@@ -170,10 +170,10 @@ handle_pf_ucf: bf ready pf
 # Uncached Request Routine
 uncached_req: bf uc_coherent rcf
 bf uncached_store rqf
-pushq memCmd MEM_CMD_UC_RD addr=req lce=req
+pushq memCmd MEM_CMD_RD addr=req lce=req
 popq lceReq
 bi ready
-uncached_store: pushq memCmd MEM_CMD_UC_WR addr=req lce=req
+uncached_store: pushq memCmd MEM_CMD_WR addr=req lce=req
 bi ready
 
 # Uncached request to coherent/cacheable memory
@@ -214,9 +214,9 @@ uc_complete_inv: popq lceResp
 
 uc_mem: movgs r7 msgsize
 bf coherent_store rqf
-pushq memCmd MEM_CMD_UC_RD addr=req lce=req wp=1
+pushq memCmd MEM_CMD_RD addr=req lce=req wp=1
 popq lceReq
 bi ready
-coherent_store: pushq memCmd MEM_CMD_UC_WR addr=req lce=req wp=1
+coherent_store: pushq memCmd MEM_CMD_WR addr=req lce=req wp=1
 bi ready
 
