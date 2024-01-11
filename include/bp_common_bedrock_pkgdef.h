@@ -98,9 +98,9 @@ typedef enum {
   e_bedrock_mem_rd               = 0
   ,e_bedrock_mem_wr              = 1
   ,e_bedrock_mem_amo             = 2
-  ,e_bedrock_mem_uc_rd           = 3
-  ,e_bedrock_mem_uc_wr           = 4
-  ,e_bedrock_mem_uc_amo          = 5
+  //,e_bedrock_mem_uc_rd           = 3
+  //,e_bedrock_mem_uc_wr           = 4
+  //,e_bedrock_mem_uc_amo          = 5
   ,e_bedrock_mem_pre             = 8
 } bp_bedrock_mem_type_e;
 

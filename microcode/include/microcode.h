@@ -35,9 +35,10 @@
 #define MEM_CMD_RD 0
 #define MEM_CMD_WR 1
 #define MEM_CMD_AMO 2
-#define MEM_CMD_UC_RD 3
-#define MEM_CMD_UC_WR 4
-#define MEM_CMD_UC_AMO 5
+// cacheability is controlled by PMAs
+//#define MEM_CMD_UC_RD 3
+//#define MEM_CMD_UC_WR 4
+//#define MEM_CMD_UC_AMO 5
 #define MEM_CMD_PRE 8
 
 #define SIZE_1 0
