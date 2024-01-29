@@ -44,7 +44,7 @@ pushq lceCmd ST_WB addr=lru lce=req way=lru
 replacement_poph: poph lceResp r0
 beqi r0 COH_ACK replacement_poph
 bf complete_replacement nwbf
-pushq memCmd MEM_CMD_WR addr=lru lce=req way=lru wp=1
+pushq memCmd MEM_CMD_WR addr=lru lce=req way=lru wp=1 src=lcerespdata
 bi next_coh_state
 complete_replacement: popq lceResp
 
@@ -66,7 +66,7 @@ wds addr=req lce=owner way=owner state=ownerCohSt
 transfer_poph: poph lceResp r0
 beqi r0 COH_ACK transfer_poph
 bf complete_transfer nwbf
-pushq memCmd MEM_CMD_WR addr=lceresp lce=owner way=owner wp=1
+pushq memCmd MEM_CMD_WR addr=lceresp lce=owner way=owner wp=1 src=lcerespdata
 bi ready
 complete_transfer: popq lceResp
 bi ready
@@ -81,7 +81,7 @@ bf uncached_store rqf
 pushq memCmd MEM_CMD_RD addr=req lce=req
 popq lceReq
 bi ready
-uncached_store: pushq memCmd MEM_CMD_WR addr=req lce=req
+uncached_store: pushq memCmd MEM_CMD_WR addr=req lce=req src=lcereqdata
 bi ready
 
 # Uncached request to coherent/cacheable memory
@@ -101,7 +101,7 @@ wds addr=req lce=req way=req state=imm COH_I
 uc_replacement_poph: poph lceResp r0
 beqi r0 COH_ACK uc_replacement_poph
 bf uc_complete_replacement nwbf
-pushq memCmd MEM_CMD_WR addr=lceresp lce=req way=req wp=1
+pushq memCmd MEM_CMD_WR addr=lceresp lce=req way=req wp=1 src=lcerespdata
 bi uc_inv_check
 uc_complete_replacement: popq lceResp
 
@@ -111,7 +111,7 @@ wds addr=req lce=owner way=owner state=imm COH_I
 uc_inv_poph: poph lceResp r0
 beqi r0 COH_ACK uc_inv_poph
 bf uc_complete_inv nwbf
-pushq memCmd MEM_CMD_WR addr=lceresp lce=req way=req wp=1
+pushq memCmd MEM_CMD_WR addr=lceresp lce=req way=req wp=1 src=lcerespdata
 bi uc_mem
 uc_complete_inv: popq lceResp
 
@@ -120,6 +120,6 @@ bf coherent_store rqf
 pushq memCmd MEM_CMD_RD addr=req lce=req wp=1
 popq lceReq
 bi ready
-coherent_store: pushq memCmd MEM_CMD_WR addr=req lce=req wp=1
+coherent_store: pushq memCmd MEM_CMD_WR addr=req lce=req wp=1 src=lcereqdata
 bi ready
 
