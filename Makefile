@@ -9,6 +9,7 @@ UCODE_SRC_DIR=$(abspath ./microcode/cce)
 
 ROMS_DIR=$(abspath ./roms)
 
+CC=gcc
 CXX=g++
 COMMON_CFLAGS=-Wall -Wno-switch -Wno-format -Wno-unused-function
 CXXFLAGS=-g -std=c++11 $(COMMON_CFLAGS)
@@ -20,6 +21,13 @@ LFLAGS=-g $(COMMON_FLAGS)
 AS_SRC=$(abspath $(wildcard $(AS_SRC_DIR)/*.cc))
 AS_OBJ=$(AS_SRC:.cc=.o)
 AS=bp-as
+
+ECHO  ?= echo
+CP    ?= cp
+MKDIR ?= mkdir
+SED   ?= sed
+PERL  ?= perl
+RM    ?= rm
 
 UCODE_SRC=$(wildcard $(UCODE_SRC_DIR)/*.S)
 UCODE_BUILD_SRC=$(addprefix $(ROMS_DIR)/, $(notdir $(UCODE_SRC)))
@@ -35,7 +43,7 @@ PYTHON ?= python3
 .DEFAULT: echo
 
 echo:
-	@echo "try running: 'make as'"
+	@$(ECHO) "try running: 'make as'"
 
 # Assembler
 
@@ -50,14 +58,14 @@ as: $(AS)
 # Microcode
 
 dirs:
-	mkdir -p $(ROMS_DIR)
-	cp $(UCODE_SRC_DIR)/* $(ROMS_DIR)/
+	$(MKDIR) -p $(ROMS_DIR)
+	$(CP) $(UCODE_SRC_DIR)/* $(ROMS_DIR)/
 
 %.addr: %.S
 	$(PYTHON) py/addr.py -i $< > $@
 
 %.pre: %.S
-	gcc -E $(COMMON_CFLAGS) -I$(UCODE_INC_DIR) $< -o $@
+	$(CC) -E $(COMMON_CFLAGS) -I$(UCODE_INC_DIR) $< -o $@
 
 %.mem: %.pre $(AS)
 	./$(AS) -p -i $< -o $@
@@ -69,16 +77,16 @@ dirs:
 #   loader to determine the end of the binary and know to stop loading without counting
 #   the length of the program.
 %.bin: %.mem
-	sed -i -e '$$a1111111111111111111111111111111111111111111111111111111111111111' $^
-	sed -i -e '$$a1111111111111111111111111111111111111111111111111111111111111111' $^
-	perl -ne 'print pack("B64", $$_)' < $^ > $@
+	$(SED) -i -e '$$a1111111111111111111111111111111111111111111111111111111111111111' $^
+	$(SED) -i -e '$$a1111111111111111111111111111111111111111111111111111111111111111' $^
+	$(PERL) -ne 'print pack("B64", $$_)' < $^ > $@
 
 bins: dirs $(UCODE_ADDR) $(UCODE_MEM) $(UCODE_BIN)
 
 tidy:
-	rm -f $(AS_OBJ)
+	$(RM) -f $(AS_OBJ)
 
 clean: tidy
-	rm -f $(AS)
-	rm -rf $(ROMS_DIR)
+	$(RM) -f $(AS)
+	$(RM) -rf $(ROMS_DIR)
 
